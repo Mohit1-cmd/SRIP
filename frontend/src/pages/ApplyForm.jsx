@@ -72,11 +72,9 @@ export default function ApplyForm() {
         setError(errorMsg);
         setSubmitting(false);
       } else {
-        // Network error fallback simulation
-        setTimeout(() => {
-          setSubmitting(false);
-          navigate('/success', { state: { name: formData.full_name, email: formData.email } });
-        }, 1000);
+        // Handle actual network error
+        setError('Network error. Please try again later.');
+        setSubmitting(false);
       }
     });
   };
@@ -85,7 +83,7 @@ export default function ApplyForm() {
     <div className="form-container" style={{ paddingBottom: '4rem' }}>
       <div className="apply-hero">
         <div className="apply-hero-subtitle">Student Research Internship Portal · SRIP</div>
-        <h1>Internship Application Form</h1>
+        <h1>Application: {positionTitle}</h1>
         <p>Fields below are tagged to show how each one is meant to be handled in a consent-aware design — see the key underneath.</p>
       </div>
 

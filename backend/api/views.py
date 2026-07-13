@@ -49,15 +49,15 @@ class ApplicationCreateView(APIView):
             # Create application instance with default 'submitted' status
             app = serializer.save(status='submitted')
 
-            # 1. Send onboarding email to student
-            send_onboarding_email(app)
-
-            # 2. Try to whitelist on Anumati (Option A)
-            success = invite_to_anumati(app.email, app.full_name)
+            # 1. Try to whitelist on Anumati (Option A)
+            success, temp_password = invite_to_anumati(app.email, app.full_name)
             if success:
                 app.anumati_invited = True
                 app.status = 'anumati_invited'
                 app.save()
+            
+            # 2. Send onboarding email to student
+            send_onboarding_email(app, temp_password=temp_password)
 
             return Response({'message': 'Application received'}, status=status.HTTP_201_CREATED)
 

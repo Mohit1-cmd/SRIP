@@ -16,7 +16,7 @@ def generate_temp_password(length=12):
 def invite_to_anumati(email, full_name):
     """
     Calls Anumati's manual signup API to pre-create the student's account.
-    Returns: success_boolean
+    Returns: (success_boolean, temp_password_or_none)
     """
     anumati_url = getattr(settings, 'ANUMATI_BASE_URL', 'https://anumati1.iiitb.ac.in/api')
     temp_password = generate_temp_password()
@@ -39,7 +39,7 @@ def invite_to_anumati(email, full_name):
         
         if resp.status_code == 201:
             logger.info(f"Successfully pre-registered {email} on Anumati.")
-            return True
+            return True, temp_password
         else:
             logger.error(f"Failed to pre-register {email} on Anumati. Status: {resp.status_code}, Response: {resp.text}")
             # Check if email already exists
@@ -47,11 +47,11 @@ def invite_to_anumati(email, full_name):
                 error_data = resp.json()
                 if "already registered" in error_data.get("error", "").lower():
                     logger.info(f"User {email} is already registered on Anumati. Skipping.")
-                    return True
+                    return True, None
             except Exception:
                 pass
-            return False
+            return False, None
             
     except Exception as e:
         logger.error(f"Error calling Anumati signup API for {email}: {str(e)}")
-        return False
+        return False, None

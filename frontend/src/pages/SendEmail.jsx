@@ -164,27 +164,38 @@ export default function SendEmail() {
             whiteSpace: 'pre-wrap',
             lineHeight: '1.7',
           }}>
-{`Subject: Your SRIP Application - WSL Lab, IIIT Bangalore
+{`Subject: Application Received – ${form.position_title || 'Research Internship'} | WSL Lab, IIITB
 
-Dear ${form.name || 'Applicant'},
+Hi ${form.name || 'Applicant'},
 
-Thank you for your interest in the
-${form.position_title || 'Research Internship'} position
-at WSL Lab, IIIT Bangalore.
+Thank you for applying! We have received your application for the
+${form.position_title || 'Research Internship'} position at WSL Lab, IIIT Bangalore.
 
-NEXT STEPS:
-1. Log in to your pre-created Anumati account:
-   https://anumati1.iiitb.ac.in/login
-   Username: ${form.email || 'their-email@gmail.com'}
-2. Create a locker named: SRIP Application
-3. Upload your CV, transcript, and Statement of Purpose
-4. You will receive a connection request from the lab.
-   Accept it to share your documents with us.
+Our team will review your details and get back to you shortly.
 
-If you face issues, reply to this email.
+────────────────────────────────────────
+NEXT STEP — SET UP YOUR ANUMATI LOCKER
+────────────────────────────────────────
+We use Anumati, a consent-based document locker, to collect
+your supporting documents securely. We have pre-created an
+account for you.
+
+  Login URL : https://anumati1.iiitb.ac.in/login
+  Username  : ${form.email || 'their-email@gmail.com'}
+
+Once logged in:
+  1. Create a locker named  →  SRIP Application
+  2. Upload your CV, transcript, and Statement of Purpose
+  3. Accept the connection request from our lab to share
+     your documents with us.
+
+────────────────────────────────────────
+
+If you have any questions, just reply to this email.
 
 Best regards,
-WSL Lab, IIIT Bangalore`}
+WSL Lab, IIIT Bangalore
+https://wsl.iiitb.ac.in`}
           </pre>
         </div>
       </div>

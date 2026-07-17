@@ -21,6 +21,12 @@ export default function Navbar() {
         >
           Internships
         </Link>
+        <Link
+          to="/send-email"
+          className={`navbar-link ${location.pathname === '/send-email' ? 'active' : ''}`}
+        >
+          Send Email
+        </Link>
         <a 
           href="https://anumati1.iiitb.ac.in" 
           target="_blank" 

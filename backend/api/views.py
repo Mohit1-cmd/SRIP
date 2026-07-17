@@ -8,7 +8,7 @@ from django.utils.decorators import method_decorator
 
 from .models import Position, Application
 from .serializers import PositionSerializer, ApplicationSerializer
-from .services.email_service import send_onboarding_email
+from .services.email_service import send_onboarding_email, send_direct_email
 from .services.anumati_service import invite_to_anumati
 
 class PositionListView(generics.ListAPIView):
@@ -77,3 +77,31 @@ class ApplicationUpdateView(generics.UpdateAPIView):
     permission_classes = [IsAdminUser]
     authentication_classes = [SessionAuthentication, BasicAuthentication]
 
+
+class SendEmailView(APIView):
+    """
+    Manually send the onboarding email to any email address.
+    POST body: { "email": "...", "name": "...", "position_title": "..." (optional) }
+    Open to all (no auth required) — rate limited to 10/min per IP.
+    """
+    permission_classes = [AllowAny]
+    authentication_classes = []
+
+    def post(self, request):
+        to_email = request.data.get('email', '').strip()
+        full_name = request.data.get('name', '').strip() or 'Applicant'
+        position_title = request.data.get('position_title', 'Research Internship').strip()
+
+        if not to_email:
+            return Response({'error': 'Email address is required.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        success = send_direct_email(
+            to_email=to_email,
+            full_name=full_name,
+            position_title=position_title,
+        )
+
+        if success:
+            return Response({'message': f'Email sent successfully to {to_email}.'}, status=status.HTTP_200_OK)
+        else:
+            return Response({'error': 'Failed to send email. Check server logs.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

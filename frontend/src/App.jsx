@@ -4,6 +4,7 @@ import Navbar from './components/Navbar';
 import PositionsList from './pages/PositionsList';
 import ApplyForm from './pages/ApplyForm';
 import SubmitSuccess from './pages/SubmitSuccess';
+import SendEmail from './pages/SendEmail';
 
 export default function App() {
   return (
@@ -15,6 +16,7 @@ export default function App() {
             <Route path="/" element={<PositionsList />} />
             <Route path="/apply" element={<ApplyForm />} />
             <Route path="/success" element={<SubmitSuccess />} />
+            <Route path="/send-email" element={<SendEmail />} />
           </Routes>
         </main>
         <footer className="footer">
